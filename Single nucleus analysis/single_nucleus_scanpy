@@ -44,27 +44,11 @@ scores_df = sn_rna_adata.obs[[f'score_{gene}' for gene in selected_genes]]
 ############################################################################################
 # 3, Grouping and summarizing data by clusters
 ############################################################################################
-# add cluster info and get mean expression score
+# Add cluster info and calculate mean expression score
 scores_df['Cluster_Idents'] = sn_rna_adata.obs['Cluster_Idents']
 cluster_mean_scores = scores_df.groupby('Cluster_Idents').mean()
 
-# change column names and re-order of columns and rows
-cluster_mean_scores.columns = [col.replace('score_', '') for col in cluster_mean_scores.columns]
-new_order = [
-    'Podo', 'PEC', 'Endo_GC', 'Endo_Lymphatic', 'Endo_Peritubular', 'PT_S1', 'PT_S2', 'PT_S3',
-    'iPT', 'Des-Thin_Limb', 'Ascending_Thin_LOH', 'C_TAL', 'M_TAL', 'DCT1', 'DCT2', 'CNT',
-    'PC', 'IC_A', 'IC_B', 'Fibroblast_1', 'Fibroblast_2', 'GS_Stromal', 'Mes', 'MyoFib/VSMC',
-    'Macula_Densa', 'Plasma_Cells', 'B_memory', 'B_Naive', 'CD4T', 'CD8T', 'CD14_Mono', 'CD16_Mono',
-    'NK', 'Neutrophil', 'Mac', 'pDC', 'cDC', 'Prolif_Lym', 'Neural_Cells', 'RBC'
-]
-
-cluster_mean_scores = cluster_mean_scores.reindex(new_order)
-
-# remove clusters having < 30 cells and so on
-clusters_to_remove = ['RBC', 'cDC', 'CD14_Mono', 'Prolif_Lym', 'pDC', 'PEC', 'Neural_Cells', 'iPT']
-cluster_mean_scores_new = cluster_mean_scores.drop(clusters_to_remove)
-
-# making new dataframe 
+# Map clusters to broader categories
 cluster_mapping = {
     'Endo_GC': 'Endo', 'Endo_Lymphatic': 'Endo', 'Endo_Peritubular': 'Endo',
     'PT_S1': 'PT', 'PT_S2': 'PT', 'PT_S3': 'PT', 'Des-Thin_Limb': 'PT', 
@@ -72,27 +56,19 @@ cluster_mapping = {
     'DCT1': 'DCT', 'DCT2': 'DCT', 'IC_A': 'IC', 'IC_B': 'IC',
     'Fibroblast_1': 'Stromal', 'Fibroblast_2': 'Stromal', 'GS_Stromal': 'Stromal', 'Mes': 'Stromal', 'MyoFib/VSMC': 'Stromal', 'Macula_Densa': 'Stromal',
     'Plasma_Cells': 'Immune', 'B_memory': 'Immune', 'B_Naive': 'Immune',
-    'CD4T': 'Immune', 'CD8T': 'Immune',
-    'CD14_Mono': 'Immune', 'CD16_Mono': 'Immune', 'Mac': 'Immune', 
+    'CD4T': 'Immune', 'CD8T': 'Immune', 'Mac': 'Immune', 
     'Neutrophil': 'Immune'
 }
 
-all_clusters = [
-    'PT_S1', 'Endo_Peritubular', 'C_TAL', 'M_TAL', 'DCT1', 'CNT', 'IC_A', 'PT_S2', 'PT_S3',
-    'PC', 'Fibroblast_1', 'DCT2', 'Endo_GC', 'Macula_Densa', 'CD4T', 'Des-Thin_Limb', 'IC_B', 'CD8T',
-    'Mac', 'B_memory', 'Podo', 'Fibroblast_2', 'GS_Stromal', 'MyoFib/VSMC', 
-    'Mes', 'CD16_Mono', 'B_Naive', 'Ascending_Thin_LOH', 'Endo_Lymphatic', 'Plasma_Cells', 'Neutrophil',
-    'NK'
-]
-
+# Map the remaining clusters
+all_clusters = list(cluster_mean_scores.index)
 for cluster in all_clusters:
     if cluster not in cluster_mapping:
         cluster_mapping[cluster] = cluster
 
-# get mean expression levels 
-cluster_mean_scores_new['New_Category'] = cluster_mean_scores_new.index.map(cluster_mapping)
-consolidated_mean_scores = cluster_mean_scores_new.groupby('New_Category').mean()
-
+# Apply the mapping
+cluster_mean_scores['New_Category'] = cluster_mean_scores.index.map(cluster_mapping)
+consolidated_mean_scores = cluster_mean_scores.groupby('New_Category').mean()
 
 ############################################################################################
 # 4, Calculating z-scores for gene expression
