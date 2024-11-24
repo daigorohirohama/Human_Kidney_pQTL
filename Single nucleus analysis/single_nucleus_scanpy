@@ -5,7 +5,7 @@
 #
 ##############################################################################
 
-# The following code demonstrates the case for 46 genes correspoinding to 46 coloc proteins
+# The following code demonstrates the case for 51 genes correspoinding to 51 coloc proteins
 
 import numpy as np
 import pandas as pd
@@ -24,15 +24,17 @@ adata = sc.read("/path/to/single_nuc.h5ad")
 ############################################################################################
 # 2, Calculating scores for selected genes
 ############################################################################################
-##  using 46 genes correspoinding to 46 coloc proteins
+##  using 51 genes correspoinding to 51 coloc proteins
 ##  'GPX1' does not exist in this data
 
 selected_genes = [
-    'ACP1', 'ACSS2', 'ANGPTL3', 'ARL6IP5', 'ATP5IF1', 'B4GALT1', 'CHMP1A', 'CPNE1', 'CPXM1', 'CTSS', 'DNER', 'EIF1AD', 
-    'FCN3', 'FLRT3', 'GLUD1', 'GSTA1', 'IL1RL1', 'INHBC', 'ITIH3', 'ITPA', 'LEAP2', 'MANBA', 'MDH2', 'MESD', 
-    'MGMT', 'MST1', 'NT5C3A', 'NUDCD3', 'PLA2G4A', 'PLA2R1', 'PNPT1', 'RAB2A', 'RMDN1', 'SELENOM', 'SNUPN', 'SPATA33', 
-    'SULT1A1', 'THY1', 'TIGAR', 'TPPP3', 'TRIP10', 'UBA7', 'UBASH3B', 'VNN2', 'VTI1B'
+    'ACP1', 'ACSS2', 'ANGPTL3', 'APOL3', 'ARL6IP5', 'ATP5IF1', 'B4GALT1', 'CHMP1A', 'CPNE1', 'CPXM1', 
+    'CSDC2', 'CTSB', 'CTSS', 'DPEP1', 'DR1', 'EIF1AD', 'ETFA', 'FAM177A1', 'FCN3', 'FLRT3', 'GLUD1', 
+    'GSTA1', 'INHBC', 'ITIH3', 'ITPA', 'MANBA', 'MANEA', 'MAP4K5', 'MDH2', 'MST1', 'NT5C3A', 
+    'NUDCD3', 'PDE1B', 'PLA2R1', 'PNPT1', 'PRDX1', 'PRXL2A', 'PTPRJ', 'RAB2A', 'RMDN1', 'RPP25', 'SNUPN', 
+    'SPATA33', 'TCEA3', 'TIGAR', 'TPPP', 'TPPP3', 'TRIP10', 'UBA7', 'VASN'
 ]
+
 
 # get expression levels for each gene
 for gene in selected_genes:
