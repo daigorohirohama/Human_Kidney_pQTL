@@ -8,9 +8,8 @@
 #
 ############################################################################
 
-# Only variants with a FDR(qvalue) less than 0.05 at the protein or gene level were used as instruments
+# Only lead variants (the most significant variants at each locus) at the protein or gene level were used as instruments
 # The following code demonstrates the case for pQTL
-# The SNP~protein pairs include all SNPs that meet the criterion of protein level FDR(qvalue) < 0.05
 
 for SNP_protein in $(cat SNP_protein_list.txt); do
   ./Software/SMR/smr_Linux --bfile ./1000GP_Phase3/EUR_phase3_MAF05 \
