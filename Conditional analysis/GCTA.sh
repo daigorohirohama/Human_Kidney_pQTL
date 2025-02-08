@@ -15,7 +15,6 @@
 ################################################################################
 
 #!/bin/bash
-set -e  # Stop script on error
 
 # Set parameters
 GCTA="/path/to/gcta64"  
