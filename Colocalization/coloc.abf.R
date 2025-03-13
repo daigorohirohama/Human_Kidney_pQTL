@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 ################################################################################
-# Colocalization analysis (GWAS and QTL) using coloc package
+# Colocalization analysis (GWAS and QTL) using coloc package (coloc.abf)
 #
 # This script extracts candidate SNPs by overlapping GWAS and QTL loci,
 # and then performs colocalization analysis.
